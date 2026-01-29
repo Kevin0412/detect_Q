@@ -12,7 +12,7 @@ def detect_Q(img: np.ndarray, m: int = 2, n: int = 2, show: bool = False) -> Tup
     检测前台角色能量条的充能边界。
 
     参数:
-    - img: 已截取的包含能量环区域的 BGR 图像（最好为方形区域）。
+    - img: 已截取的包含能量环区域的 BGR 图像。
     - m, n: 边界裁剪参数（用于忽略顶部/底部若干行）。
     - show: 若为 True，会显示中间可视化结果（用于调试）。
 
