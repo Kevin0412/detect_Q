@@ -1,0 +1,7 @@
+opencv-python
+numpy
+Pillow
+scikit-image
+matplotlib
+mss
+pyautogui
