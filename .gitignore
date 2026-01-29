@@ -1,0 +1,60 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+egg-info/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+venv.bak/
+
+# Pytest cache
+.pytest_cache/
+
+# IDEs
+.vscode/
+.idea/
+
+# macOS
+.DS_Store
+
+# logs and databases
+*.log
+*.sqlite3
+
+# compiled notebook checkpoints
+.ipynb_checkpoints/
+
+# temporary files
+*.tmp
+*.swp
+
+# image caches (uncomment if you want to ignore all images)
+# *.png
+# *.jpg
+# images/
+
+# scripts
+scripts/reorg_images.sh
