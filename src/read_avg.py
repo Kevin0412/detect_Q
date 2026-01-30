@@ -19,5 +19,5 @@ img/=len(file_list)
 img2/=len(file_list)
 img2-=img*img
 img2=np.sqrt(img2)*2
-cv2.imwrite('avg_3.png',img)
-cv2.imwrite('avg1_3.png',img2)
+cv2.imwrite('templates/avg_3.png',img)
+cv2.imwrite('templates/avg1_3.png',img2)

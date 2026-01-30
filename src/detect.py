@@ -111,7 +111,7 @@ def detect_q(img: np.ndarray, show: bool = False) -> float:
 
     # 尝试从模块目录读取 avg_Q.png（如果不存在，退回到全白权重以避免除 0）
     script_dir = os.path.dirname(__file__)
-    avg_path = os.path.join(script_dir, "avg_Q.png")
+    avg_path = os.path.join(script_dir, "templates/avg_Q.png")
     avg_img = None
     if os.path.exists(avg_path):
         avg_img = cv2.imread(avg_path, 0)

@@ -41,8 +41,7 @@ _BACKGROUND_BOXES = [
 ]
 
 # 默认阈值（可调整）
-_DETECT_Q_THRESHOLD = 0.35   # detect_q 匹配得分阈值，历史上临界 ~0.30-0.40
-_DETECT_Q_FOREGROUND_CONFIRM = 0.35
+_DETECT_Q_THRESHOLD = 0.30   # detect_q 匹配得分阈值，历史上临界 ~0.30-0.40
 _DETECT_Q_INDEX_TO_PCT = lambda idx: max(0.0, min(1.0, -0.00855878 * idx + 0.968064109))
 # detect_Q 返回的 score 历史临界区间参考: [4.59,6.21]
 _DETECT_Q_SCORE_THRESHOLD = 4.59
@@ -92,13 +91,19 @@ def analyze_1920_frame(img_or_path: Any) -> Dict[str, Any]:
         slots_ready.append(bool(ready))
         slots_scores.append(float(score))
 
+    fg_ready=False
+    fg_match = detect_q(fg)
     # 前台检测：使用 detect_Q 获取 index 和 score
     idx, score_fg = detect_Q(fg)
-    # 计算充能百分比（基于拟合公式）
-    charge_pct = _DETECT_Q_INDEX_TO_PCT(idx)
-    # 使用 detect_q 对前台裁切做模板匹配以做二次确认
-    fg_match = detect_q(fg)
-    fg_ready = (score_fg >= _DETECT_Q_SCORE_THRESHOLD) or (fg_match >= _DETECT_Q_FOREGROUND_CONFIRM)
+    if score_fg>=_DETECT_Q_SCORE_THRESHOLD:
+        # 计算充能百分比（基于拟合公式）
+        charge_pct = _DETECT_Q_INDEX_TO_PCT(idx)
+    else:
+        charge_pct = 0.0
+        fg_ready = (fg_match >= _DETECT_Q_THRESHOLD)
+        if fg_ready:
+            # 若模板匹配也通过，则认为充能已满
+            charge_pct = 1.0
 
     result = {
         'slots': slots_ready,
