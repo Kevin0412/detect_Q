@@ -56,5 +56,3 @@ venv.bak/
 # *.jpg
 # images/
 
-# scripts
-scripts/reorg_images.sh
