@@ -33,8 +33,7 @@ detect_Q/
 │   ├── validation/      # 验证用截图
 │   ├── env_variations/  # 环境变化截图
 │   ├── fitting/         # 拟合用截图（{energy}_{max_energy}.png）
-│   ├── author_icons/    # 作者全角色爆发图标
-│   └── archive/         # 历史归档
+│   └── author_icons/    # 作者全角色爆发图标
 └── 平均模板文件（示例）
   ├── avg_Q.png        # 当前用于后台爆发匹配的平均模板（由 src/add_data.py 生成）
   └── 其他生成的平均模板（试验品）
@@ -62,6 +61,10 @@ detect_Q/
 **平均模板说明**
 
 - 当前用于后台爆发匹配的模板文件为 `avg_Q.png`，该文件位于仓库根目录（由 `src/add_data.py` 生成）。
+
+**模板展示**（平均模板）：
+
+![avg_Q](templates/avg_Q.png)
 
 生成原理（简述）：
 
@@ -120,6 +123,10 @@ print('前台充能百分比:', result['foreground']['charge_pct'])
 
 ### 测试用例 1：正常充能（能量条边缘清晰）
 
+**输入图片示例**：
+
+![输入示例 1](screenshots/fitting/35_50.png)
+
 命令：
 ```bash
 python3 examples/analyze_1920.py screenshots/fitting/35_50.png
@@ -146,6 +153,10 @@ python3 examples/analyze_1920.py screenshots/fitting/35_50.png
 
 ### 测试用例 2：能量为空（无显著边缘突变，通过模板匹配判定）
 
+**输入图片示例**：
+
+![输入示例 2](screenshots/validation/1%20(1).png)
+
 命令：
 ```bash
 python3 examples/analyze_1920.py screenshots/validation/1\ \(1\).png
@@ -171,6 +182,10 @@ python3 examples/analyze_1920.py screenshots/validation/1\ \(1\).png
 ---
 
 ### 测试用例 3：能量满充（无显著边缘突变，通过模板匹配判定）
+
+**输入图片示例**：
+
+![输入示例 3](screenshots/validation/1%20(3).png)
 
 命令：
 ```bash
