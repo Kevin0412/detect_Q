@@ -21,10 +21,13 @@
 说明：此文件仅为演示/封装，不修改 `detect.py`，且使用了示例阈值（可按需调整）。
 """
 
-import sys
 from typing import Dict, Any, List, Tuple
 import cv2
 import numpy as np
+import sys, os
+
+path = os.getcwd() + r'/src'
+sys.path.append(path)
 
 from detect import detect_Q, detect_q
 

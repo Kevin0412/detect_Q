@@ -15,24 +15,53 @@
 
 ---
 
+### 项目结构
+
+```
+detect_Q/
+├── src/                 # 核心模块（可通过 from src import detect_Q, detect_q 导入）
+│   ├── __init__.py      # 模块入口，导出检测函数
+│   ├── detect.py        # 检测逻辑主脚本（能量条检测 + 后台元素爆发匹配）
+│   ├── add_data.py      # 生成平均模板的工具
+│   ├── read_avg.py      # 读取并处理平均图像
+│   ├── locate.py        # 手动定位元素爆发图标
+│   ├── manual_sort.py   # 人工分类截图工具
+│   └── screenshot.py    # 屏幕截图采集脚本
+├── examples/            # 示例与演示脚本
+│   └── analyze_1920.py  # 基于 1920x1080 的完整分析示例（推荐使用）
+├── data/                # 已标注的小图标（模板库）
+├── screenshots/         # 截图存档（按功能分类）
+│   ├── validation/      # 验证用截图
+│   ├── env_variations/  # 环境变化截图
+│   ├── fitting/         # 拟合用截图（{energy}_{max_energy}.png）
+│   ├── author_icons/    # 作者全角色爆发图标
+│   └── archive/         # 历史归档
+└── templates/           # 预生成的平均模板（待创建）
+    ├── avg_Q.png        # 后台爆发图标平均模板
+    ├── avg_foreground_full.png  # （可选）前台满能量模板
+    └── ...
+```
+
 ### 主要文件说明
 
-- add_data.py：对一组小图标做逐像素累加/平均，生成模板或平均图像。
-- detect.py：检测逻辑主脚本（能量条检测 + 后台元素爆发匹配）。
-- locate.py：用于手动或半自动定位元素爆发图标位置，便于裁切与采样。
-- manual_sort.py：人工对截图进行是否含有元素爆发的分类整理工具。
-- read_avg.py：读取并处理已生成的平均图像（配合 add_data.py）。
-- screenshot.py：截图采集脚本（用于样本采集）。
+- **src/detect.py**：检测逻辑核心，导出 `detect_Q`（前台能量条）与 `detect_q`（后台爆发图标）。
+- **src/add_data.py**：对一组小图标做逐像素累加/平均，生成 `avg_Q.png` 等平均模板。
+- **src/read_avg.py**：读取并处理已生成的平均图像（配合 add_data.py）。
+- **src/locate.py**：手动或半自动定位元素爆发图标位置，便于裁切与采样。
+- **src/manual_sort.py**：人工对截图进行是否含有元素爆发的分类整理。
+- **src/screenshot.py**：屏幕截图采集脚本。
+- **examples/analyze_1920.py**：推荐使用的高层封装，基于 1920x1080 输入完整截图，返回四个后台位就绪状态、前台就绪与充能百分比。
 
 ### 数据与目录说明
 
-- data/：已按类别整理好的小图标（模板库），用于生成平均模板或直接匹配。
-- images/：用于验证的随机游戏截图集合（用于快速检验检测效果）。
-- images_2/、images_3/：在不同环境/设置下采集的截图，用于测试环境鲁棒性。
-- images_4/：用于拟合（fitting）的截图集。文件命名格式为 `{元素能量}_{总元素能量}.png`（例如 `25_80.png`），这些样本通过追忆套等可重复流程采集，用于校准模板与能量映射关系。
-- images_5/：备用或历史截图存档。
-- images_6/：作者本人全角色的元素爆发小图标集合（用于计算均值并做匹配）。采集流程示例：使用雷电将军对“公义”进行充能，以标准化充能过程。
-- images_7/：额外样本或特殊场景截图。
+- **data/**：已按类别整理好的小图标（模板库），用于生成平均模板或直接匹配。
+- **screenshots/**：大截图与样本存档，按用途分类：
+  - validation/：用于验证的随机游戏截图集合（用于快速检验检测效果）。
+  - env_variations/：在不同环境/设置下采集的截图，用于测试环境鲁棒性。
+  - fitting/：用于拟合（fitting）的截图集。文件命名格式为 `{元素能量}_{总元素能量}.png`（例如 `25_80.png`），这些样本通过追忆套等可重复流程采集，用于校准模板与能量映射关系。
+  - author_icons/：作者本人全角色的元素爆发小图标集合（用于计算均值并做匹配）。采集流程示例：使用雷电将军对"公义"进行充能，以标准化充能过程。
+  - archive/：历史截图与其他类别样本归档。
+- **templates/**（待创建）：预生成的平均模板文件目录。
 
 **截图区域与快速示例**
 
@@ -47,7 +76,7 @@
 - 模块使用示例（在代码中导入并调用）：
 
 ```python
-from detect import *
+from src.detect import detect_Q, detect_q
 import cv2
 
 # 假设已经用 screenshot.py 截好图并按坐标裁切
@@ -59,6 +88,18 @@ match_score = detect_q(img_back)
 
 print('foreground index:', index, 'score:', score)
 print('background match score:', match_score)
+```
+
+- 或使用高层示例（推荐）：
+
+```python
+from examples.analyze_1920 import analyze_1920_frame
+import cv2
+
+# 输入完整 1920x1080 截图，自动裁切并返回所有检测结果
+result = analyze_1920_frame(cv2.imread('screenshot.png'))
+print('后台四位就绪状态:', result['slots'])
+print('前台充能百分比:', result['foreground']['charge_pct'])
 ```
 
 - 注意：`detect_Q` 与 `detect_q` 都需要输入已裁切好的小图（函数不负责在完整屏幕上搜索）。
