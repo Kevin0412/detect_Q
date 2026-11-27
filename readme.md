@@ -6,6 +6,16 @@
 
 本仓库为基于 UI 图像分析的原神元素爆发（Q，元素爆发）与能量条检测原型，侧重在不依赖简单颜色阈值或圆检测的条件下，通过投影、差分与模板匹配判断充能比例与爆发就绪状态。
 
+## Automatic rendering / 自动渲染
+
+[![Render gallery](https://github.com/Kevin0412/detect_Q/actions/workflows/render-gallery.yml/badge.svg)](https://github.com/Kevin0412/detect_Q/actions/workflows/render-gallery.yml)
+
+![Generated preview](docs/generated/preview.webp)
+
+The original detect_q runs on the existing labeled icon dataset. Preview shows example inputs and their actual detection scores; CSV contains the evaluated dataset.
+
+[Download workflow artifacts](https://github.com/Kevin0412/detect_Q/actions).
+
 ---
 
 ### 快速概览
@@ -216,13 +226,3 @@ python3 examples/analyze_1920.py screenshots/validation/1\ \(3\).png
 - **能量条边缘突变清晰时**：`detect_Q` 直接计算充能百分比。
 - **能量为空或满充时**：由于能量条边缘不明显，`detect_Q` 的 score 低于阈值，此时系统使用 `detect_q` 与后台爆发图标模板比对作二次确认，判断充能是否满。
 - **CD 中的情况**：建议结合文字识别或其他辅助判断方式。
-
-## Automatic rendering / 自动渲染
-
-[![Render gallery](https://github.com/Kevin0412/detect_Q/actions/workflows/render-gallery.yml/badge.svg)](https://github.com/Kevin0412/detect_Q/actions/workflows/render-gallery.yml)
-
-![Generated preview](docs/generated/preview.webp)
-
-The original detect_q runs on the existing labeled icon dataset. Preview shows example inputs and their actual detection scores; CSV contains the evaluated dataset.
-
-[Download workflow artifacts](https://github.com/Kevin0412/detect_Q/actions).
